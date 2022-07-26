@@ -1,9 +1,9 @@
 #Tu lances le programmme 
 
 
-n=input("Nombre d'issues possible : ") # nombre de paris sur le match de possible pour couvrir toutes les options   
-m=input("Mise maximale possible : ")   # Les côtes boostées en général on une mise maximale donc c'est ce qu'il faut renseigner 
-i=input("issue de la mise max : ")     # Tu dois donner le numéro de la côte de la côte boosté
+nb_issue=input("Nombre d'issues possible : ") # nombre de paris sur le match de possible pour couvrir toutes les options   
+mise_max=input("Mise maximale possible : ")   # Les côtes boostées en général on une mise maximale donc c'est ce qu'il faut renseigner 
+issue_max=input("issue de la mise max : ")     # Tu dois donner le numéro de la côte de la côte boosté
 
 # Après tu vas devoir renseigner les différentes côtes donc la tu choisis en fonction des différents sites de paris afin d'avoir la meilleur côte possible, donc faut vraiment que tu sois sur quasi tous les sites pour optimiser le truc, je sais que winamax fait beaucoup de côte boostés donc check souvent chez eux
 # Si il te dit pas de surebet ça veut dire que t'as pas de côte assez avantageuses pour t'assurer de faire de l'argent 
@@ -13,62 +13,62 @@ i=input("issue de la mise max : ")     # Tu dois donner le numéro de la côte d
 # Dernier truc fait gaffe les côtes bouge souvent donc juste avant de faire ton paris vérifie bien les côtes sinon ca peut faire que t'es pas forcément gagnant
 
 
-n=int(n)
-m=int(m)
-i=int(i)
+nb_issue=int(nb_issue)
+mise_max=int(mise_max)
+issue_max=int(issue_max)
 
-def cotes(n):
-    C=[]
-    for k in range(n):
+def cotes(nb_issue):
+    Cote=[]
+    for k in range(nb_issue):
         c=input("Cotes de l'issue "+str(k+1)+" : ")
-        C.append(float(c))
-    return(C)
+        Cote.append(float(c))
+    return(Cote)
 
-C = cotes(n)
+Cote = cotes(nb_issue)
 
-def inverse(C):
-    l=len(C)
-    S=0
-    for k in range(l):
-        S=1/C[k]+S
-    if S<1:
+def inverse(Cote):
+    
+    inv=0
+    for k in range(len(Cote)):
+        inv=1/Cote[k]+inv
+    if inv<1:
         return(True)
     else:
         return(False)
 
-def inverse2(C):
-    l=len(C)
-    S=0
+def inverse2(Cote):
+    l=len(Cote)
+    inv=0
     for k in range(l):
-        S=1/C[k]+S
-    return(S)
+        inv=1/Cote[k]+inv
+    return(inv)
 
-def mise2(C,m,i):
+def mise2(Cote,mise_max,issue_max):
     P=[]
-    l=len(C)
-    T=m*C[i-1]*inverse2(C)
+    l=len(Cote)
+    T=mise_max*Cote[issue_max-1]*inverse2(Cote)
     for k in range(l):
-        if k==i-1:
-            P.append(m)
+        if k==issue_max-1:
+            P.append(mise_max)
         else:
-            P.append(T/(C[k]*inverse2(C)))
+            P.append(T/(Cote[k]*inverse2(Cote)))
     return(P)
 
-P=mise2(C,m,i)
+P=mise2(Cote,mise_max,issue_max)
 
-def fin(n,P):
+def fin(nb_issue,P):
     a="\n \n"
     S=0
     for j in range(len(P)):
         S=S+P[j]
-    if inverse(C)==False:
+    if inverse(nb_issue)==False:
         print("Pas de Surebet")
-        print(str(1+1-inverse2(C)))
+        print(str(1+1-inverse2(Cote)))
     else:
-        b=1+1-inverse2(C)
+        b=1+1-inverse2(Cote)
         a=a+"Le taux de retoure est de : "+ str(b) + "\n"+ "Donc un gain de : "+ str(S*b-S) +"\n"
-        for k in range(n):
-            if k==n-1:
+        for k in range(nb_issue):
+            if k==nb_issue-1:
                 a = a+"Miser pour l'issue "+str(k+1)+" : "+str(P[k])
             else:    
                 a=a+"Miser pour l'issue "+str(k+1)+" : "+str(P[k])+"\n"
@@ -76,4 +76,4 @@ def fin(n,P):
         print(a)
 
 
-fin(n,P)
+fin(nb_issue,P)
